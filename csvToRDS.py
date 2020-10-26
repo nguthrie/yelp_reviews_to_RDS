@@ -1,7 +1,8 @@
 import pymysql
+import credentials
 
-db = pymysql.connect("database-1.cfdgt090zyck.us-east-1.rds.amazonaws.com",
-                     'admin', 'admin123', local_infile=True)
+db = pymysql.connect(credentials.database, credentials.user,
+                     credentials.password, local_infile=True)
 cursor = db.cursor()
 
 
