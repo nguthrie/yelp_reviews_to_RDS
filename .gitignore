@@ -3,5 +3,6 @@
 ./idea
 /.idea
 
+credentials.py
 TODO.txt
 /venv
