@@ -6,3 +6,5 @@
 credentials.py
 TODO.txt
 /venv
+
+__pycache__/
