@@ -14,7 +14,7 @@ def show_databases():
 
 
 def create_project_database():
-    sql = '''CREATE DATABASE yelp_scaper_project;'''
+    sql = '''CREATE DATABASE IF NOT EXISTS yelp_scaper_project;'''
     cursor.execute(sql)
 
 
@@ -46,7 +46,7 @@ def select_all_data_in_table():
 
 
 def drop_table():
-    sql = '''DROP TABLE review_data;'''
+    sql = '''DROP TABLE IF EXISTS review_data;'''
     cursor.execute(sql)
 
 
@@ -67,6 +67,7 @@ def load_local_data():
 
 if __name__ == "__main__":
 
+    create_project_database()
     use_database()
     drop_table()
     create_review_table()
