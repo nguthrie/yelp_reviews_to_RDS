@@ -4,12 +4,20 @@ import re
 import pandas as pd
 
 
-def main_scraper(soup):
+def get_soup(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    return soup
+
+
+def main_scraper(url, csv_name):
     """
     Calls all helper functions to assemble final data.
     :param soup: html soup object
     :return: list of data as columns. i.e all usernames as first list
     """
+
+    soup = get_soup(url)
 
     usernames = get_usernames(soup)
     review_date = get_dates(soup)
@@ -17,7 +25,8 @@ def main_scraper(soup):
     friend_count, review_count = get_friend_and_review_counts(soup)
     review_text = get_review_texts(soup)
 
-    return [usernames, review_date, star_ratings, friend_count, review_count, review_text]
+    list_of_data = [usernames, review_date, star_ratings, friend_count, review_count, review_text]
+    create_csv(list_of_data, csv_name)
 
 
 def get_usernames(soup):
@@ -75,7 +84,7 @@ def get_star_ratings(soup):
 def get_friend_and_review_counts(soup):
     """Takes soup, and returns separate lists of friends and review counts."""
     # note: triple matches friends, so take each third element only
-    # note: missing values are set to 0 to make sure column lenghts match
+    # note: missing values are set to 0 to make sure column lengths match
     friend_regex = r'<b>([\d]*)<\/b> friends'
     review_regex = r'<b>([\d]*)<\/b> reviews'
     friend_numbers, review_numbers = [], []
@@ -112,17 +121,25 @@ def get_dates(soup):
     return dates
 
 
-if __name__ == "__main__":
-
-    response = requests.get("https://www.yelp.ca/biz/lov-king-west-toronto-2")
-    yelp_soup = BeautifulSoup(response.content, 'html.parser')
-
-    list_of_data = main_scraper(yelp_soup)
+def create_csv(list_of_lists, csv_name):
+    """
+    Takes a list of lists, with each column matching the names below.
+    :param list_of_lists:
+    :return:
+    """
 
     reviews_df = pd.DataFrame(columns=['username', 'review_date', 'star_rating', 'friend_count',
                                        'reivew_count', 'review_text'])
 
-    for index, data in enumerate(list_of_data):
+    for index, data in enumerate(list_of_lists):
         reviews_df.iloc[:, index] = data
 
-    reviews_df.to_csv('reviews.csv', index=False)
+    reviews_df.to_csv(csv_name, index=False)
+
+
+if __name__ == "__main__":
+
+    pass
+    # input_url = "https://www.yelp.ca/biz/lov-king-west-toronto-2"
+    # csv_name = "reviews.csv"
+    # main_scraper(input_url, csv_name)
