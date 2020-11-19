@@ -132,7 +132,6 @@ def create_csv(list_of_lists, csv_name):
                                        'reivew_count', 'review_text'])
 
     for index, data in enumerate(list_of_lists):
-        print(data)
         reviews_df.iloc[:, index] = data
 
     reviews_df.to_csv(csv_name, index=False)
