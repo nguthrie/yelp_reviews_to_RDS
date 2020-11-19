@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import pandas as pd
+import sys
 
 
 def get_soup(url):
@@ -52,8 +53,7 @@ def get_review_texts(soup):
     """
     regex = r'lang="en">(.*)<\/span'
     review_texts = []
-    review_matches = soup.find_all('p', class_="lemon--p__373c0__3Qnnj text__373c0__2Kxyz comment__373c0__"
-                                               "3EKjH text-color--normal__373c0__3xep9 text-align--left__373c0__2XGa-")
+    review_matches = soup.find_all('p', class_="lemon--span__373c0__3997G raw__373c0__3rcx7")
     for review_match in review_matches:
 
         review = re.search(regex, str(review_match))
@@ -132,6 +132,7 @@ def create_csv(list_of_lists, csv_name):
                                        'reivew_count', 'review_text'])
 
     for index, data in enumerate(list_of_lists):
+        print(data)
         reviews_df.iloc[:, index] = data
 
     reviews_df.to_csv(csv_name, index=False)
@@ -140,5 +141,10 @@ def create_csv(list_of_lists, csv_name):
 if __name__ == "__main__":
 
     input_url = "https://www.yelp.ca/biz/lov-king-west-toronto-2"
-    csv_name = "reviews.csv"
+
+    if sys.argv[0]:
+        csv_name = sys.argv[0]
+    else:
+        csv_name = "reviews.csv"
+
     main_scraper(input_url, csv_name)
