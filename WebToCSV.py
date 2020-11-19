@@ -139,7 +139,6 @@ def create_csv(list_of_lists, csv_name):
 
 if __name__ == "__main__":
 
-    pass
-    # input_url = "https://www.yelp.ca/biz/lov-king-west-toronto-2"
-    # csv_name = "reviews.csv"
-    # main_scraper(input_url, csv_name)
+    input_url = "https://www.yelp.ca/biz/lov-king-west-toronto-2"
+    csv_name = "reviews.csv"
+    main_scraper(input_url, csv_name)
