@@ -141,8 +141,8 @@ if __name__ == "__main__":
 
     input_url = "https://www.yelp.ca/biz/lov-king-west-toronto-2"
 
-    if sys.argv[0]:
-        csv_name = sys.argv[0]
+    if sys.argv[1]:
+        csv_name = sys.argv[1]
     else:
         csv_name = "reviews.csv"
 
